@@ -1,8 +1,9 @@
 import { Bell, Plus, ChevronDown } from 'lucide-react';
+import { type GitHubUser } from '@/hooks/useGitHubData';
 
 interface GitHubHeaderProps {
   isDarkMode: boolean;
-  userData: any;
+  userData: GitHubUser;
 }
 
 export const GitHubHeader = ({ isDarkMode, userData }: GitHubHeaderProps) => (

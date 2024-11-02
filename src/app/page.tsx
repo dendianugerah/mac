@@ -226,6 +226,7 @@ export default function Home() {
             onClose={() => handleWindowControl('close')}
             onMinimize={() => handleWindowControl('minimize')}
             onMaximize={() => handleWindowControl('maximize')}
+            onMouseDown={startDragging}
           />
 
           {/* Main window content */}

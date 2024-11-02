@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import { useWindowDrag } from '@/hooks/useWindowDrag';
 import { motion } from 'framer-motion';
 
 interface WindowTitleBarProps {
   isDarkMode: boolean;
-  isMaximized?: boolean;
-  onClose?: () => void;
-  onMinimize?: () => void;
-  onMaximize?: () => void;
-  onDoubleClick?: () => void;
+  isMaximized: boolean;
+  onClose: () => void;
+  onMinimize: () => void;
+  onMaximize: () => void;
+  onMouseDown: (e: React.MouseEvent) => void;
   title?: string;
 }
 
@@ -18,14 +17,14 @@ export const WindowTitleBar = ({
   onClose, 
   onMinimize, 
   onMaximize,
+  onMouseDown,
   title = "Notes"
 }: WindowTitleBarProps) => {
-  const { startDragging } = useWindowDrag(!!isMaximized);
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div 
-      onMouseDown={startDragging}
+      onMouseDown={onMouseDown}
       onDoubleClick={onMaximize}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -87,8 +86,7 @@ interface WindowControlProps {
 }
 
 const WindowControl = ({ 
-  color, 
-  hoverColor, 
+  color,
   icon, 
   onClick, 
   isVisible,

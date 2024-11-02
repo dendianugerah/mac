@@ -8,18 +8,19 @@ const NOTES_DIRECTORY = path.join(process.cwd(), 'src/content/notes');
 // Update a note
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const note = await request.json();
-    const fileName = `${params.id}.mdx`;
+    const fileName = `${context.params.id}.mdx`;
     const filePath = path.join(NOTES_DIRECTORY, fileName);
 
     const frontmatter = {
       title: note.title,
       date: note.date,
       id: note.id,
-      isStatic: false
+      isStatic: false,
+      isPinned: note.isPinned || false
     };
 
     const fileContent = matter.stringify(note.content, frontmatter);

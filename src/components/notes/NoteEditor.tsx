@@ -1,7 +1,7 @@
 import { Note } from '@/types';
 import { motion } from 'framer-motion';
 import { serialize } from 'next-mdx-remote/serialize';
-import { MDXRemote } from 'next-mdx-remote';
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { useState, useEffect } from 'react';
 
 interface NoteEditorProps {
@@ -11,7 +11,7 @@ interface NoteEditorProps {
 }
 
 export const NoteEditor = ({ note, isDarkMode, onUpdate }: NoteEditorProps) => {
-  const [mdxSource, setMdxSource] = useState<any>(null);
+  const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(null);
 
   useEffect(() => {
     if (note.isStatic) {

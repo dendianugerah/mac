@@ -1,8 +1,9 @@
-import { Users, MapPin, Link2, Mail, Star, Building, Clock } from 'lucide-react';
+import { Users, MapPin, Link2, Mail, Building, Clock } from 'lucide-react';
+import { type GitHubUser } from '@/hooks/useGitHubData';
 
 interface GitHubProfileProps {
   isDarkMode: boolean;
-  userData: any;
+  userData: GitHubUser;
   formatDate: (date: string) => string;
   children?: React.ReactNode;
 }

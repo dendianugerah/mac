@@ -4,12 +4,13 @@ import { GitHubProfile } from '../github/GitHubProfile';
 import { GitHubTabs } from '../github/GitHubTabs';
 import { GitHubContent } from '../github/GitHubContent';
 import { formatDate } from '@/utils/dateFormatters';
+import { type GitHubUser, type GitHubRepo } from '@/hooks/useGitHubData';
 
 interface SafariContentProps {
   isDarkMode: boolean;
   isLoading: boolean;
-  userData: any;
-  repos: any[];
+  userData: GitHubUser | null;
+  repos: GitHubRepo[];
   error: string | null;
   activeTab: string;
   setActiveTab: (tab: string) => void;

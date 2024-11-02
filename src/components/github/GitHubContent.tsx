@@ -1,9 +1,10 @@
 import { Star, GitFork } from 'lucide-react';
+import { type GitHubRepo } from '@/hooks/useGitHubData';
 
 interface GitHubContentProps {
   isDarkMode: boolean;
   activeTab: string;
-  repos: any[];
+  repos: GitHubRepo[];
 }
 
 export const GitHubContent = ({ isDarkMode, activeTab, repos }: GitHubContentProps) => {
@@ -64,7 +65,7 @@ export const GitHubContent = ({ isDarkMode, activeTab, repos }: GitHubContentPro
   );
 };
 
-const PinnedRepoCard = ({ repo, isDarkMode }: { repo: any; isDarkMode: boolean }) => (
+const PinnedRepoCard = ({ repo, isDarkMode }: { repo: GitHubRepo; isDarkMode: boolean }) => (
   <div className={`p-4 rounded-lg border h-[120px] flex flex-col justify-between
     ${isDarkMode 
       ? 'border-[#30363d] bg-[#0d1117] hover:border-[#8b949e]' 
