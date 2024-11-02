@@ -24,7 +24,7 @@ export const GitHubTabs = ({ isDarkMode, activeTab, setActiveTab, repoCount, sta
   ];
 
   return (
-    <div className={`border-b ${isDarkMode ? 'border-[#21262d]' : 'border-gray-200'}`}>
+    <div className={`border-b ${isDarkMode ? 'border-[#21262d]' : 'border-[#d0d7de]'}`}>
       <div className="flex">
         {tabs.map((tab) => (
           <button
@@ -32,8 +32,8 @@ export const GitHubTabs = ({ isDarkMode, activeTab, setActiveTab, repoCount, sta
             onClick={() => setActiveTab(tab.label.toLowerCase())}
             className={`flex items-center px-4 py-3 border-b-2 transition-colors relative
               ${activeTab === tab.label.toLowerCase()
-                ? `border-[#f78166] ${isDarkMode ? 'text-white' : 'text-black'}`
-                : `border-transparent ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`
+                ? `border-[#fd8c73] ${isDarkMode ? 'text-white' : 'text-[#24292f]'}`
+                : `border-transparent ${isDarkMode ? 'text-gray-400' : 'text-[#24292f]'}`
               } hover:border-gray-300`}
           >
             <div className="flex items-center">
@@ -41,7 +41,9 @@ export const GitHubTabs = ({ isDarkMode, activeTab, setActiveTab, repoCount, sta
               <span className="ml-2 text-sm font-medium">{tab.label}</span>
               {tab.count !== undefined && (
                 <span className={`ml-2 px-[6px] py-[2px] text-xs rounded-full leading-none
-                  ${isDarkMode ? 'bg-[#30363d] text-gray-200' : 'bg-[#eef1f4] text-gray-600'}`}
+                  ${isDarkMode 
+                    ? 'bg-[#30363d] text-gray-200' 
+                    : 'bg-[#eef1f6] text-[#24292f]'}`}
                 >
                   {tab.count}
                 </span>

@@ -9,7 +9,7 @@ export const GitHubHeader = ({ isDarkMode, userData }: GitHubHeaderProps) => (
   <div className={`h-[62px] ${
     isDarkMode ? 'bg-[#0d1117]' : 'bg-white'
   } border-b ${
-    isDarkMode ? 'border-[#21262d]' : 'border-gray-200'
+    isDarkMode ? 'border-[#21262d]' : 'border-[#d0d7de]'
   } flex items-center px-8`}>
     <div className="flex items-center flex-1">
       <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32" className={`${isDarkMode ? 'text-white' : 'text-black'} fill-current`}>
@@ -26,7 +26,7 @@ export const GitHubHeader = ({ isDarkMode, userData }: GitHubHeaderProps) => (
             className={`w-full h-full px-3 text-sm rounded-md
               ${isDarkMode 
                 ? 'bg-[#0d1117] text-white placeholder-gray-400' 
-                : 'bg-[#f6f8fa] text-gray-900 placeholder-gray-500'
+                : 'bg-[#f6f8fa] text-[#24292f] placeholder-[#57606a]'
               } focus:outline-none focus:ring-2 focus:ring-[#0969da] focus:border-transparent`}
           />
           <div className={`absolute right-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded text-xs border
@@ -42,8 +42,8 @@ export const GitHubHeader = ({ isDarkMode, userData }: GitHubHeaderProps) => (
             <a 
               key={item} 
               href="#"
-              className={`text-sm font-semibold hover:text-gray-600
-                ${isDarkMode ? 'text-white' : 'text-gray-700'}`}
+              className={`text-sm font-semibold hover:text-[#0969da]
+                ${isDarkMode ? 'text-white' : 'text-[#24292f]'}`}
             >
               {item}
             </a>

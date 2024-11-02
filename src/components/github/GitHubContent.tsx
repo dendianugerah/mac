@@ -12,17 +12,20 @@ export const GitHubContent = ({ isDarkMode, activeTab, repos }: GitHubContentPro
   );
 
   return (
-    <div className="px-8 py-6">
+    <div className={`px-8 py-6 ${isDarkMode ? 'text-white' : 'text-[#24292f]'}`}>
       {activeTab === 'overview' && (
         <div>
           {/* Pinned Repositories */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-base font-semibold">
+              <h2 className={`text-base font-semibold ${isDarkMode ? 'text-white' : 'text-[#24292f]'}`}>
                 Pinned
               </h2>
-              <button className={`text-xs hover:text-[#0969da] dark:hover:text-[#58a6ff]
-                ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              <button className={`text-xs ${
+                isDarkMode 
+                  ? 'text-gray-400 hover:text-[#58a6ff]' 
+                  : 'text-[#57606a] hover:text-[#0969da]'
+              }`}>
                 Customize your pins
               </button>
             </div>
@@ -65,7 +68,7 @@ const PinnedRepoCard = ({ repo, isDarkMode }: { repo: any; isDarkMode: boolean }
   <div className={`p-4 rounded-lg border h-[120px] flex flex-col justify-between
     ${isDarkMode 
       ? 'border-[#30363d] bg-[#0d1117] hover:border-[#8b949e]' 
-      : 'border-gray-200 bg-white hover:border-[#0969da]'
+      : 'border-[#d0d7de] bg-white hover:border-[#0969da]'
     } transition-colors duration-200`}
   >
     <div>
@@ -74,12 +77,12 @@ const PinnedRepoCard = ({ repo, isDarkMode }: { repo: any; isDarkMode: boolean }
           href={repo.html_url}
           target="_blank"
           rel="noopener noreferrer"
-          className={`text-[#0969da] dark:text-[#58a6ff] text-sm font-semibold hover:underline`}
+          className={`${isDarkMode ? 'text-[#58a6ff]' : 'text-[#0969da]'} text-sm font-semibold hover:underline`}
         >
           {repo.name}
         </a>
         <span className={`text-xs px-1.5 py-0.5 rounded-full
-          ${isDarkMode ? 'bg-[#21262d] text-gray-400' : 'bg-[#eef1f4] text-[#57606a]'}`}>
+          ${isDarkMode ? 'bg-[#21262d] text-gray-400' : 'bg-[#eef1f6] text-[#57606a]'}`}>
           Public
         </span>
       </div>
@@ -101,13 +104,11 @@ const PinnedRepoCard = ({ repo, isDarkMode }: { repo: any; isDarkMode: boolean }
         />
         {repo.name === 'hooknhold' ? 'TypeScript' : 'Go'}
       </span>
-      <a href="#" className={`flex items-center hover:text-[#0969da] dark:hover:text-[#58a6ff]
-        ${isDarkMode ? 'text-gray-400' : 'text-[#57606a]'}`}>
+      <a href="#" className={`flex items-center ${isDarkMode ? 'text-gray-400 hover:text-[#58a6ff]' : 'text-[#57606a] hover:text-[#0969da]'}`}>
         <Star className="w-4 h-4 mr-1" />
         <span>{repo.name === 'hooknhold' ? '21' : '1'}</span>
       </a>
-      <a href="#" className={`flex items-center hover:text-[#0969da] dark:hover:text-[#58a6ff]
-        ${isDarkMode ? 'text-gray-400' : 'text-[#57606a]'}`}>
+      <a href="#" className={`flex items-center ${isDarkMode ? 'text-gray-400 hover:text-[#58a6ff]' : 'text-[#57606a] hover:text-[#0969da]'}`}>
         <GitFork className="w-4 h-4 mr-1" />
         <span>{repo.name === 'hooknhold' ? '1' : '0'}</span>
       </a>
@@ -117,7 +118,7 @@ const PinnedRepoCard = ({ repo, isDarkMode }: { repo: any; isDarkMode: boolean }
 
 const ContributionGraph = ({ isDarkMode }: { isDarkMode: boolean }) => (
   <div className={`p-4 rounded-lg border
-    ${isDarkMode ? 'border-[#30363d] bg-[#0d1117]' : 'border-[#ebedf0] bg-white'}`}
+    ${isDarkMode ? 'border-[#30363d] bg-[#0d1117]' : 'border-[#d0d7de] bg-white'}`}
   >
     <div className="grid grid-cols-[repeat(51,_1fr)] gap-[3px]">
       {Array.from({ length: 357 }).map((_, i) => (
@@ -132,7 +133,7 @@ const ContributionGraph = ({ isDarkMode }: { isDarkMode: boolean }) => (
         />
       ))}
     </div>
-    <div className="mt-2 flex items-center justify-between text-xs text-[#57606a] dark:text-gray-400">
+    <div className="mt-2 flex items-center justify-between text-xs text-[#57606a]">
       <span>Less</span>
       <div className="flex items-center gap-[3px]">
         {[0, 1, 2, 3, 4].map((level) => (
@@ -153,7 +154,7 @@ const ContributionGraph = ({ isDarkMode }: { isDarkMode: boolean }) => (
 
 const ActivityOverview = ({ isDarkMode }: { isDarkMode: boolean }) => (
   <div className={`mt-4 p-4 rounded-lg border
-    ${isDarkMode ? 'border-[#30363d] bg-[#0d1117]' : 'border-[#ebedf0] bg-white'}`}
+    ${isDarkMode ? 'border-[#30363d] bg-[#0d1117]' : 'border-[#d0d7de] bg-white'}`}
   >
     <div className="flex items-center gap-2">
       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs
