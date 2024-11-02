@@ -19,6 +19,12 @@ export const Safari = ({ isDarkMode, url, onClose, isMaximized, onMaximize }: Sa
   const { isClosing, handleClose } = useSafariWindow(onClose);
   const [activeTab, setActiveTab] = useState('overview');
 
+  const handleMinimize = () => {
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+  };
+
   return (
     <div className="fixed inset-0 z-[100000] flex items-start justify-center">
       <motion.div
@@ -52,8 +58,10 @@ export const Safari = ({ isDarkMode, url, onClose, isMaximized, onMaximize }: Sa
         <WindowTitleBar
           isDarkMode={isDarkMode}
           onClose={handleClose}
-          isMaximized={isMaximized}
-          onMaximize={onMaximize}
+          isMaximized={isMaximized || false}
+          onMaximize={onMaximize || (() => {})}
+          onMinimize={handleMinimize}
+          onMouseDown={handleMouseDown}
           title="Safari"
         />
 
