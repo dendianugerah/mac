@@ -1,11 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Wifi, Battery, Volume2, Command, Moon, Sun, WifiOff, Power, Lock, Github } from 'lucide-react';
+import React, { useState } from 'react';
+import { Wifi, Battery, Volume2, Command, Moon, Sun, WifiOff, Github } from 'lucide-react';
 import { DropdownMenu } from '@/components/ui/DropdownMenu';
 import { WifiMenu } from '@/components/ui/WifiMenu';
-import { useOnClickOutside } from '@/hooks/useOnClickOutside';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { AppleMenu } from '@/components/ui/AppleMenu';
 import { Safari } from '@/components/browser/Safari';
+import { BatteryMenu } from '@/components/ui/BatteryMenu';
+import { VolumeMenu } from '@/components/ui/VolumeMenu';
 
 interface MenuBarProps {
   isDarkMode: boolean;
@@ -48,8 +49,8 @@ const StatusIcons = ({ isDarkMode, toggleDarkMode, currentTime }: Pick<MenuBarPr
       <div className="flex items-center space-x-[8px] px-[8px] h-full">
         <CommandMenu />
         <WifiStatus isDarkMode={isDarkMode} />
-        <BatteryStatus />
-        <VolumeControl />
+        <BatteryStatus isDarkMode={isDarkMode} />
+        <VolumeControl isDarkMode={isDarkMode} />
         <button 
           onClick={() => setIsGithubOpen(true)}
           className="hover:bg-black/10 dark:hover:bg-white/10 p-[2px] rounded-sm"
@@ -95,19 +96,49 @@ const WifiStatus = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [isConnected, setIsConnected] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const toggleConnection = () => {
+    setIsConnected(!isConnected);
+  };
+
   return (
     <div className="relative">
       <button 
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="hover:opacity-80 transition-opacity p-[2px] rounded"
+        className="hover:bg-black/10 dark:hover:bg-white/10 p-1 rounded-[4px]
+          transition-colors duration-150"
       >
         {isConnected ? (
-          <Wifi className="w-[13px] h-[13px]" />
+          <Wifi className="w-[16px] h-[16px]" />
         ) : (
-          <WifiOff className="w-[13px] h-[13px]" />
+          <WifiOff className="w-[16px] h-[16px]" />
         )}
       </button>
       <WifiMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        isDarkMode={isDarkMode}
+        isConnected={isConnected}
+        onToggleConnection={toggleConnection}
+      />
+    </div>
+  );
+};
+
+const VolumeControl = ({ isDarkMode }: { isDarkMode: boolean }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [volume, setVolume] = useState(75);
+  const [isMuted, setIsMuted] = useState(false);
+
+  return (
+    <div className="relative">
+      <button 
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="hover:bg-black/10 dark:hover:bg-white/10 p-1 rounded-[4px]
+          transition-colors duration-150"
+      >
+        <Volume2 className="w-[16px] h-[16px]" />
+      </button>
+      <VolumeMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
         isDarkMode={isDarkMode}
@@ -116,19 +147,33 @@ const WifiStatus = ({ isDarkMode }: { isDarkMode: boolean }) => {
   );
 };
 
-const VolumeControl = () => (
-  <button 
-    className="hover:opacity-80 transition-opacity p-[2px] rounded"
-  >
-    <Volume2 className="w-[13px] h-[13px]" />
-  </button>
-);
+const BatteryStatus = ({ isDarkMode }: { isDarkMode: boolean }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const batteryLevel = 85; // This could be dynamic
 
-const BatteryStatus = () => (
-  <div className="flex items-center p-[2px]">
-    <Battery className="w-[13px] h-[13px]" />
-  </div>
-);
+  return (
+    <div className="relative">
+      <button 
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="hover:bg-black/10 dark:hover:bg-white/10 p-1 rounded-[4px]
+          transition-colors duration-150 flex items-center"
+      >
+        <div className="relative">
+          <svg width="16" height="16" viewBox="0 0 16 16" className={batteryLevel > 20 ? 'text-current' : 'text-red-500'}>
+            <rect x="1" y="4" width="12" height="8" rx="1" fill="none" stroke="currentColor" strokeWidth="1" />
+            <rect x="2" y="5" width={`${(batteryLevel/100) * 10}`} height="6" fill="currentColor" />
+            <path d="M14 7h1v2h-1V7z" fill="currentColor" />
+          </svg>
+        </div>
+      </button>
+      <BatteryMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        isDarkMode={isDarkMode}
+      />
+    </div>
+  );
+};
 
 const CommandMenu = () => (
   <button className="hover:opacity-80 transition-opacity p-[2px] rounded">
@@ -220,7 +265,6 @@ export const MenuBar = ({
   currentTime,
   onSleep,
   onLock,
-  onOpenGithub
 }: MenuBarProps) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
