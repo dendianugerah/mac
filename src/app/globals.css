@@ -2,6 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
+/* macOS-like scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Light mode scrollbar */
+@media (prefers-color-scheme: light) {
+  ::-webkit-scrollbar-thumb {
+    background-color: #9f9f9f;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #878787;
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background-color: #767676;
+  }
+}
+
+/* Dark mode scrollbar */
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background-color: #4a4a4a;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #5a5a5a;
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background-color: #6a6a6a;
+  }
+}
+
+/* Hide scrollbar when not hovering */
+::-webkit-scrollbar-thumb {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+
+/* Ensure scrollbar styles apply to specific components */
+.prose {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+/* Firefox scrollbar styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #9f9f9f transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  * {
+    scrollbar-color: #4a4a4a transparent;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
