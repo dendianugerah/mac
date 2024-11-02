@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wifi, Battery, Volume2, Command, Moon, Sun, WifiOff, Github } from 'lucide-react';
+import { Wifi, Volume2, Command, Moon, Sun, WifiOff, Github } from 'lucide-react';
 import { DropdownMenu } from '@/components/ui/DropdownMenu';
 import { WifiMenu } from '@/components/ui/WifiMenu';
 import { AnimatePresence } from 'framer-motion';
@@ -126,8 +126,6 @@ const WifiStatus = ({ isDarkMode }: { isDarkMode: boolean }) => {
 
 const VolumeControl = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [volume, setVolume] = useState(75);
-  const [isMuted, setIsMuted] = useState(false);
 
   return (
     <div className="relative">
@@ -149,7 +147,7 @@ const VolumeControl = ({ isDarkMode }: { isDarkMode: boolean }) => {
 
 const BatteryStatus = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const batteryLevel = 85; // This could be dynamic
+  const batteryLevel = 85;
 
   return (
     <div className="relative">

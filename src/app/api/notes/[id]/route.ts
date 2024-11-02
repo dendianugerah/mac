@@ -28,6 +28,7 @@ export async function PUT(
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error('Error updating notes:', error);
     return NextResponse.json(
       { error: 'Failed to update note' }, 
       { status: 500 }
@@ -50,6 +51,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error('Error deleting notes:', error);
     return NextResponse.json(
       { error: 'Failed to delete note' }, 
       { status: 500 }
