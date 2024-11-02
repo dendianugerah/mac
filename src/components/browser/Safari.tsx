@@ -22,7 +22,7 @@ export const Safari = ({ isDarkMode, url, onClose, isMaximized, onMaximize }: Sa
   const handleMinimize = () => {
   };
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = () => {
   };
 
   return (
