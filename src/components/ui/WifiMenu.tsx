@@ -1,24 +1,29 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Wifi, ChevronRight, Lock } from 'lucide-react';
+import { ChevronRight, Lock } from 'lucide-react';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 
 interface WifiMenuProps {
   isOpen: boolean;
   onClose: () => void;
   isDarkMode: boolean;
+  isConnected: boolean;
+  onToggleConnection: () => void;
 }
 
-export const WifiMenu = ({ isOpen, onClose, isDarkMode }: WifiMenuProps) => {
+export const WifiMenu = ({ isOpen, onClose, isDarkMode, isConnected, onToggleConnection }: WifiMenuProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(menuRef, onClose);
   const [isWifiEnabled, setIsWifiEnabled] = useState(true);
 
-  const WifiIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-      <path d="M7.927 11.476c.506 0 .917.41.917.916 0 .506-.41.916-.917.916a.917.917 0 0 1-.917-.916c0-.506.41-.916.917-.916zm2.137-2.783c.046.047.088.096.127.147a.917.917 0 0 1-.127 1.29 4.147 4.147 0 0 0-2.137-.586c-.773 0-1.505.21-2.137.586a.917.917 0 0 1-.127-1.29c.039-.051.081-.1.127-.147a5.982 5.982 0 0 1 4.274 0zm2.1-2.1c.046.046.088.095.127.146a.917.917 0 0 1-.127 1.29 7.313 7.313 0 0 0-4.237-1.337 7.313 7.313 0 0 0-4.237 1.337.917.917 0 0 1-.127-1.29c.039-.051.081-.1.127-.146a9.148 9.148 0 0 1 8.474 0zm2.1-2.1c.046.046.088.095.127.146a.917.917 0 0 1-.127 1.29 10.479 10.479 0 0 0-6.337-2.087c-2.373 0-4.614.744-6.337 2.087a.917.917 0 0 1-.127-1.29c.039-.051.081-.1.127-.146a12.314 12.314 0 0 1 12.674 0z"/>
-    </svg>
-  );
+  const handleWifiToggle = () => {
+    setIsWifiEnabled(!isWifiEnabled);
+    if (!isWifiEnabled) {
+      onToggleConnection();
+    } else if (isConnected) {
+      onToggleConnection();
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -29,91 +34,93 @@ export const WifiMenu = ({ isOpen, onClose, isDarkMode }: WifiMenuProps) => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -5 }}
           transition={{ duration: 0.1 }}
-          className={`absolute right-0 top-6 w-[280px] rounded-lg shadow-lg 
-            ${isDarkMode ? 'bg-[#2a2a2a]/95' : 'bg-[#ffffff]/95'} 
-            backdrop-blur-xl
+          className={`absolute right-0 top-7 w-[280px] rounded-lg
+            ${isDarkMode ? 'bg-[#2a2a2a]/90' : 'bg-[#ffffff]/90'} 
+            backdrop-blur-2xl
             border ${isDarkMode ? 'border-[#3a3a3a]' : 'border-[#d1d1d6]/50'}
             shadow-xl shadow-black/20 z-[9999]`}
         >
-          <div className="p-3 space-y-2">
+          <div className="py-1">
             {/* Wi-Fi Toggle Section */}
-            <div className="flex items-center justify-between">
-              <span className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                WiFi
+            <div className="flex items-center justify-between px-3 py-2">
+              <span className={`text-[13px] font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                Wi-Fi
               </span>
               <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsWifiEnabled(!isWifiEnabled)}
-                className={`relative w-[51px] h-[31px] rounded-full 
+                whileTap={{ scale: 0.97 }}
+                onClick={handleWifiToggle}
+                className={`relative w-[40px] h-[24px] rounded-full transition-colors duration-200
                   ${isWifiEnabled 
                     ? 'bg-[#007AFF]' 
-                    : isDarkMode ? 'bg-[#424242]' : 'bg-gray-200'}`}
+                    : isDarkMode ? 'bg-[#424242]' : 'bg-[#e5e5e5]'}`}
               >
                 <div
-                  className={`absolute w-[27px] h-[27px] transition-transform duration-200 
+                  className={`absolute w-[20px] h-[20px] transition-transform duration-200 
                     bg-white rounded-full shadow-sm top-[2px] left-[2px]
-                    ${isWifiEnabled ? 'translate-x-[20px]' : 'translate-x-0'}`}
+                    ${isWifiEnabled ? 'translate-x-[16px]' : 'translate-x-0'}`}
                 />
               </motion.button>
             </div>
 
             {isWifiEnabled && (
               <>
-                <div className={`text-xs font-medium ${isDarkMode ? 'text-[#86868b]' : 'text-[#86868b]'}`}>
-                  Personal Hotspot
+                <div className={`h-[1px] ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`} />
+
+                <div className="py-1">
+                  <div className={`px-3 py-1 text-[13px] font-medium ${isDarkMode ? 'text-[#86868b]' : 'text-[#86868b]'}`}>
+                    Personal Hotspot
+                  </div>
+                  <NetworkItem
+                    name="iPhone"
+                    type="personal"
+                    isDarkMode={isDarkMode}
+                    showSignal={true}
+                    showBattery={true}
+                    onClick={onToggleConnection}
+                  />
                 </div>
 
-                <button className={`w-full px-2 py-1.5 -mx-1 text-left flex items-center justify-between
-                  ${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-black/5'} rounded-md`}
-                >
-                  <div className="flex items-center space-x-2">
-                    <WifiIcon />
-                    <span className={`text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                      iPhone
-                    </span>
-                  </div>
-                  <div className={`text-xs ${isDarkMode ? 'text-[#86868b]' : 'text-[#86868b]'}`}>
-                    LTE
-                  </div>
-                </button>
+                <div className={`h-[1px] ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`} />
 
-                <div className={`text-xs font-medium ${isDarkMode ? 'text-[#86868b]' : 'text-[#86868b]'}`}>
-                  Preferred Network
+                <div className="py-1">
+                  <div className={`px-3 py-1 text-[13px] font-medium ${isDarkMode ? 'text-[#86868b]' : 'text-[#86868b]'}`}>
+                    Preferred Network
+                  </div>
+                  <NetworkItem
+                    name="Secure Wi-Fi Network"
+                    type="wifi"
+                    isDarkMode={isDarkMode}
+                    isSecure={true}
+                    isConnected={true}
+                  />
                 </div>
 
-                <button className={`w-full px-2 py-1.5 -mx-1 text-left flex items-center justify-between
-                  ${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-black/5'} rounded-md`}
-                >
-                  <div className="flex items-center space-x-2">
-                    <WifiIcon />
-                    <span className={`text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                      Secure WiFi Network
+                <div className={`h-[1px] ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`} />
+
+                <div className="py-1">
+                  <button className={`w-full px-3 py-1 text-left flex items-center justify-between
+                    ${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-black/5'}
+                    transition-colors duration-150`}
+                  >
+                    <span className={`text-[13px] ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                      Other Networks...
                     </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Lock className="w-3 h-3 text-[#86868b]" />
-                    <div className="text-[#007AFF]">✓</div>
-                  </div>
-                </button>
+                    <ChevronRight className="w-3.5 h-3.5 text-[#86868b]" />
+                  </button>
+                </div>
 
-                <button className={`w-full px-2 py-1.5 -mx-1 text-left flex items-center justify-between
-                  ${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-black/5'} rounded-md`}
-                >
-                  <span className={`text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                    Other Networks...
-                  </span>
-                  <ChevronRight className="w-4 h-4 text-[#86868b]" />
-                </button>
+                <div className={`h-[1px] ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`} />
 
-                <div className={`w-full h-[1px] my-1 ${isDarkMode ? 'bg-white/10' : 'bg-black/10'}`} />
-
-                <button className={`w-full px-2 py-1.5 -mx-1 text-left
-                  ${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-black/5'} rounded-md`}
-                >
-                  <span className={`text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                    Network Preferences...
-                  </span>
-                </button>
+                <div className="py-1">
+                  <button className={`w-full px-3 py-1 text-left
+                    ${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-black/5'}
+                    transition-colors duration-150`}
+                  >
+                    <span className={`text-[13px] ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                      Network Preferences...
+                    </span>
+                  </button>
+                </div>
               </>
             )}
           </div>
@@ -121,4 +128,74 @@ export const WifiMenu = ({ isOpen, onClose, isDarkMode }: WifiMenuProps) => {
       )}
     </AnimatePresence>
   );
-}; 
+};
+
+interface NetworkItemProps {
+  name: string;
+  type: 'wifi' | 'personal';
+  isDarkMode: boolean;
+  isSecure?: boolean;
+  isConnected?: boolean;
+  showSignal?: boolean;
+  showBattery?: boolean;
+  onClick?: () => void;
+}
+
+const NetworkItem = ({ 
+  name, 
+  type, 
+  isDarkMode, 
+  isSecure, 
+  isConnected,
+  showSignal,
+  showBattery,
+  onClick
+}: NetworkItemProps) => (
+  <button 
+    onClick={onClick}
+    className={`w-full px-3 py-1 text-left flex items-center justify-between
+      ${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-black/5'}
+      transition-colors duration-150`}
+  >
+    <div className="flex items-center space-x-2">
+      {type === 'personal' ? (
+        <PersonalHotspotIcon />
+      ) : (
+        <WifiIcon />
+      )}
+      <span className={`text-[13px] ${isDarkMode ? 'text-white' : 'text-black'}`}>
+        {name}
+      </span>
+    </div>
+    <div className="flex items-center space-x-2">
+      {isSecure && <Lock className="w-3 h-3 text-[#86868b]" />}
+      {showSignal && <SignalIcon />}
+      {showBattery && <BatteryIcon />}
+      {isConnected && <div className="text-[#007AFF] text-[13px]">✓</div>}
+    </div>
+  </button>
+);
+
+const WifiIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" className="text-[#007AFF]">
+    <path d="M8 3C10.8406 3 13.5542 4.08478 15.6673 6.12383L16 6.44721L14.8944 7.55279L14.5617 7.22941C12.7431 5.47423 10.4439 4.5 8 4.5C5.55614 4.5 3.25687 5.47423 1.43832 7.22941L1.10557 7.55279L0 6.44721L0.332676 6.12383C2.44576 4.08478 5.15936 3 8 3ZM8 6.75C9.79493 6.75 11.5019 7.41213 12.8358 8.68695L13.1685 9.00164L12.0685 10.1016L11.7358 9.78695C10.697 8.79402 9.37439 8.25 8 8.25C6.62561 8.25 5.303 8.79402 4.26421 9.78695L3.93146 10.1016L2.83146 9.00164L3.16421 8.68695C4.49807 7.41213 6.20507 6.75 8 6.75ZM8 10.5C8.86195 10.5 9.69354 10.7921 10.3761 11.3238L10.6761 11.5716L8 14.25L5.32385 11.5716L5.62385 11.3238C6.30646 10.7921 7.13805 10.5 8 10.5Z" />
+  </svg>
+);
+
+const PersonalHotspotIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" className="text-[#007AFF]">
+    <path d="M8 2a1 1 0 011 1v4h4a1 1 0 110 2h-4v4a1 1 0 11-2 0V9H3a1 1 0 110-2h4V3a1 1 0 011-1z" />
+  </svg>
+);
+
+const SignalIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" className="text-[#86868b]">
+    <path d="M1 10h2v4H1v-4zm4-3h2v7H5V7zm4-3h2v10H9V4zm4-3h2v13h-2V1z" />
+  </svg>
+);
+
+const BatteryIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" className="text-[#86868b]">
+    <path d="M3 6h8v4H3V6zm-1-1v6h10V5H2zm11 1h1v4h-1V6z" />
+  </svg>
+);
