@@ -1,5 +1,6 @@
 import { Bell, Plus, ChevronDown } from 'lucide-react';
 import { type GitHubUser } from '@/hooks/useGitHubData';
+import Image from 'next/image';
 
 interface GitHubHeaderProps {
   isDarkMode: boolean;
@@ -66,10 +67,12 @@ export const GitHubHeader = ({ isDarkMode, userData }: GitHubHeaderProps) => (
       </button>
       <button className={`flex items-center space-x-1 p-1 rounded-md
         ${isDarkMode ? 'hover:bg-[#30363d]' : 'hover:bg-gray-100'}`}>
-        <img 
+        <Image 
           src={userData?.avatar_url}
+          width={25}
+          height={25}
           alt="Profile"
-          className="w-5 h-5 rounded-full"
+          className="rounded-full"
         />
         <ChevronDown className="w-3 h-3" />
       </button>

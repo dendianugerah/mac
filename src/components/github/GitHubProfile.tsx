@@ -1,5 +1,6 @@
 import { Users, MapPin, Link2, Mail, Building, Clock } from 'lucide-react';
 import { type GitHubUser } from '@/hooks/useGitHubData';
+import Image from 'next/image';
 
 interface GitHubProfileProps {
   isDarkMode: boolean;
@@ -14,8 +15,10 @@ export const GitHubProfile = ({ isDarkMode, userData, formatDate, children }: Gi
     <div className="w-[296px] flex-shrink-0 px-8 pt-8">
       <div className="sticky top-[16px]">
         <div className="relative group">
-          <img 
-            src={userData.avatar_url} 
+          <Image
+            src={userData.avatar_url}
+            width={150}
+            height={150}
             alt={userData.name}
             className={`w-full aspect-square rounded-full border-[0.5px] 
               ${isDarkMode ? 'border-gray-700' : 'border-[#d0d7de]'}`}
