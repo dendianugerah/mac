@@ -9,6 +9,7 @@ interface WindowTitleBarProps {
   onMaximize: () => void;
   onMouseDown: (e: React.MouseEvent) => void;
   title?: string;
+  className?: string;
 }
 
 export const WindowTitleBar = ({ 
@@ -18,7 +19,8 @@ export const WindowTitleBar = ({
   onMinimize, 
   onMaximize,
   onMouseDown,
-  title = "Notes"
+  title = "Notes",
+  className = ""
 }: WindowTitleBarProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -31,7 +33,8 @@ export const WindowTitleBar = ({
       className={`h-[28px] select-none
         ${isDarkMode ? 'bg-[#2a2a2a]' : 'bg-[#e7e7e7]'} 
         border-b ${isDarkMode ? 'border-[#3a3a3a]' : 'border-[#d1d1d6]'} 
-        flex items-center justify-between px-3 cursor-default`}
+        flex items-center justify-between px-3 cursor-default
+        ${className}`}
       initial={false}
       animate={{
         backgroundColor: isDarkMode ? '#2a2a2a' : '#e7e7e7'
