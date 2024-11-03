@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Wallpaper } from './Wallpaper';
 import { User, Lock, Power } from 'lucide-react';
+import Image from 'next/image';
 
 interface LockScreenProps {
   isLocked: boolean;
@@ -17,7 +18,7 @@ export const LockScreen = ({ isLocked, onUnlock, currentTime, isDarkMode }: Lock
   const [isUnlocking, setIsUnlocking] = useState(false);
   const [showPowerOptions, setShowPowerOptions] = useState(false);
 
-  const profilePicture = "/path/to/profile.jpg";
+  const profilePicture = "/image/profile_picture.png";
 
   useEffect(() => {
     if (isLocked) {
@@ -180,9 +181,11 @@ export const LockScreen = ({ isLocked, onUnlock, currentTime, isDarkMode }: Lock
                     {profilePicture ? (
                       <div className="w-[72px] h-[72px] rounded-full bg-white/10 
                         backdrop-blur-xl border border-white/20 overflow-hidden">
-                        <img 
-                          src={profilePicture} 
-                          alt="Profile" 
+                        <Image
+                          src={profilePicture}
+                          alt="Profile"
+                          width={100}
+                          height={100}
                           className="w-full h-full object-cover"
                         />
                       </div>
@@ -236,7 +239,7 @@ export const LockScreen = ({ isLocked, onUnlock, currentTime, isDarkMode }: Lock
                   </motion.form>
 
                   <div className="text-white/60 text-sm">
-                    Click or press any key to unlock
+                  Click or press any key to unlock (Password: velldy)
                   </div>
                 </motion.div>
               )}
