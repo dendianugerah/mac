@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { hostname } from "os";
 
 const nextConfig: NextConfig = {
   typescript: {
@@ -8,6 +9,9 @@ const nextConfig: NextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  images: {
+    domains: ["avatars.githubusercontent.com"]
+  }
 };
 
 export default nextConfig;
