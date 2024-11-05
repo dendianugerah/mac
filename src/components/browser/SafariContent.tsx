@@ -49,10 +49,10 @@ const NewTabPage = ({ isDarkMode }: { isDarkMode: boolean }) => {
           bgColor: '#0D84F8'
         },
         { 
-          name: 'Maps',
-          url: 'https://maps.apple.com',
-          icon: '/icons/safari/maps.svg',
-          bgColor: '#69B27C'
+          name: 'LinkedIn',
+          url: 'https://www.linkedin.com/in/dendianugerah',
+          icon: '/icons/safari/linkedin.png',
+          bgColor: 'white'
         },
         { 
           name: 'Apple TV+',
@@ -74,7 +74,7 @@ const NewTabPage = ({ isDarkMode }: { isDarkMode: boolean }) => {
         { 
           name: 'GitHub',
           url: 'https://github.com',
-          icon: '/icons/safari/github.svg',
+          icon: '/icons/safari/github.png',
           bgColor: '#24292F'
         },
         { 
