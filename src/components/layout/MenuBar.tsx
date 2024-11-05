@@ -9,6 +9,7 @@ import { BatteryMenu } from '@/components/ui/BatteryMenu';
 import { VolumeMenu } from '@/components/ui/VolumeMenu';
 import { SearchMenu as SpotlightMenu } from '@/components/ui/SearchMenu';
 import { createPortal } from 'react-dom';
+import { menuSections } from '@/types/menu';
 
 interface MenuBarProps {
   isDarkMode: boolean;
@@ -20,21 +21,6 @@ interface MenuBarProps {
   onSleep: () => void;
   onLock: () => void;
   onOpenGithub?: () => void;
-}
-
-interface MenuItem {
-  label: string;
-  action: string;
-  shortcut?: string;
-}
-
-interface MenuSection {
-  items: MenuItem[];
-  withDivider?: boolean;
-}
-
-type MenuSections = {
-  [key: string]: MenuSection[];
 }
 
 const StatusIcons = ({ isDarkMode, toggleDarkMode, currentTime }: Pick<MenuBarProps, 'isDarkMode' | 'toggleDarkMode' | 'currentTime'>) => {
@@ -200,83 +186,6 @@ const SearchMenu = ({ isDarkMode }: { isDarkMode: boolean }) => {
     </>
   );
 };
-
-const menuSections: MenuSections = {
-  file: [
-    {
-      items: [
-        { label: 'New Note', action: 'new', shortcut: '⌘N' },
-        { label: 'Open...', action: 'open', shortcut: '⌘O' },
-      ],
-      withDivider: true
-    },
-    {
-      items: [
-        { label: 'Save', action: 'save', shortcut: '⌘S' },
-        { label: 'Save As...', action: 'saveAs', shortcut: '⇧⌘S' },
-      ],
-      withDivider: true
-    },
-    {
-      items: [
-        { label: 'Delete Note', action: 'delete', shortcut: '⌫' },
-      ],
-      withDivider: true
-    },
-    {
-      items: [
-        { label: 'Close', action: 'close', shortcut: '⌘W' },
-      ]
-    }
-  ],
-  edit: [
-    {
-      items: [
-        { label: 'Undo', action: 'undo', shortcut: '⌘Z' },
-        { label: 'Redo', action: 'redo', shortcut: '⇧⌘Z' },
-      ],
-      withDivider: true
-    },
-    {
-      items: [
-        { label: 'Cut', action: 'cut', shortcut: '⌘X' },
-        { label: 'Copy', action: 'copy', shortcut: '⌘C' },
-        { label: 'Paste', action: 'paste', shortcut: '⌘V' },
-      ]
-    }
-  ],
-  view: [
-    {
-      items: [
-        { label: 'Show Sidebar', action: 'toggleSidebar', shortcut: '⌘\\' },
-        { label: 'Show Notes List', action: 'toggleNotesList', shortcut: '⇧⌘1' },
-      ],
-      withDivider: true
-    },
-    {
-      items: [
-        { label: 'Enter Full Screen', action: 'toggleFullscreen', shortcut: '⌃⌘F' },
-      ]
-    }
-  ],
-  format: [
-    {
-      items: [
-        { label: 'Bold', action: 'bold', shortcut: '⌘B' },
-        { label: 'Italic', action: 'italic', shortcut: '⌘I' },
-        { label: 'Underline', action: 'underline', shortcut: '⌘U' },
-      ],
-      withDivider: true
-    },
-    {
-      items: [
-        { label: 'Align Left', action: 'alignLeft' },
-        { label: 'Center', action: 'alignCenter' },
-        { label: 'Align Right', action: 'alignRight' },
-      ]
-    }
-  ]
-} as const;
 
 export const MenuBar = ({
   isDarkMode,
