@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wifi, Volume2, Command, Moon, Sun, WifiOff, Github } from 'lucide-react';
+import { Wifi, Volume2, Search, Moon, Sun, WifiOff, Github } from 'lucide-react';
 import { DropdownMenu } from '@/components/ui/DropdownMenu';
 import { WifiMenu } from '@/components/ui/WifiMenu';
 import { AnimatePresence } from 'framer-motion';
@@ -7,6 +7,8 @@ import { AppleMenu } from '@/components/ui/AppleMenu';
 import { Safari } from '@/components/browser/Safari';
 import { BatteryMenu } from '@/components/ui/BatteryMenu';
 import { VolumeMenu } from '@/components/ui/VolumeMenu';
+import { SearchMenu as SpotlightMenu } from '@/components/ui/SearchMenu';
+import { createPortal } from 'react-dom';
 
 interface MenuBarProps {
   isDarkMode: boolean;
@@ -47,7 +49,7 @@ const StatusIcons = ({ isDarkMode, toggleDarkMode, currentTime }: Pick<MenuBarPr
   return (
     <div className="flex items-center h-full">
       <div className="flex items-center space-x-[8px] px-[8px] h-full">
-        <CommandMenu />
+        <SearchMenu isDarkMode={isDarkMode} />
         <WifiStatus isDarkMode={isDarkMode} />
         <BatteryStatus isDarkMode={isDarkMode} />
         <VolumeControl isDarkMode={isDarkMode} />
@@ -173,11 +175,31 @@ const BatteryStatus = ({ isDarkMode }: { isDarkMode: boolean }) => {
   );
 };
 
-const CommandMenu = () => (
-  <button className="hover:opacity-80 transition-opacity p-[2px] rounded">
-    <Command className="w-[13px] h-[13px]" />
-  </button>
-);
+const SearchMenu = ({ isDarkMode }: { isDarkMode: boolean }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <>
+      <button 
+        onClick={() => setIsMenuOpen(true)}
+        className={`p-1 rounded-[4px] transition-colors duration-150
+          ${isDarkMode 
+            ? 'hover:bg-white/10 active:bg-white/15' 
+            : 'hover:bg-black/5 active:bg-black/10'}`}
+      >
+        <Search className="w-[16px] h-[16px]" />
+      </button>
+      {createPortal(
+        <SpotlightMenu
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          isDarkMode={isDarkMode}
+        />,
+        document.body
+      )}
+    </>
+  );
+};
 
 const menuSections: MenuSections = {
   file: [
