@@ -1,45 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 interface Position {
   x: number;
   y: number;
 }
 
-interface WindowState {
-  isDragging: boolean;
-  position: Position;
-  lastPosition: Position;
-}
-
 export const useWindowDrag = (isMaximized: boolean) => {
-  const [windowState, setWindowState] = useState<WindowState>({
-    isDragging: false,
-    position: { x: 0, y: 0 },
-    lastPosition: { x: 0, y: 0 },
-  });
+  const [isDragging, setIsDragging] = useState(false);
+  const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
+  const [dragStart, setDragStart] = useState<Position>({ x: 0, y: 0 });
+  const [windowStart, setWindowStart] = useState<Position>({ x: 0, y: 0 });
+
+  const startDragging = useCallback((e: React.MouseEvent) => {
+    if (isMaximized) return;
+    
+    setIsDragging(true);
+    setDragStart({ x: e.clientX, y: e.clientY });
+    setWindowStart({ ...position });
+
+    // Prevent text selection while dragging
+    e.preventDefault();
+  }, [isMaximized, position]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!windowState.isDragging) return;
+      if (!isDragging) return;
 
-      const dx = e.clientX - windowState.lastPosition.x;
-      const dy = e.clientY - windowState.lastPosition.y;
+      const deltaX = e.clientX - dragStart.x;
+      const deltaY = e.clientY - dragStart.y;
 
-      setWindowState(prev => ({
-        ...prev,
-        position: {
-          x: prev.position.x + dx,
-          y: prev.position.y + dy,
-        },
-        lastPosition: { x: e.clientX, y: e.clientY },
-      }));
+      setPosition({
+        x: windowStart.x + deltaX,
+        y: windowStart.y + deltaY,
+      });
     };
 
     const handleMouseUp = () => {
-      setWindowState(prev => ({ ...prev, isDragging: false }));
+      setIsDragging(false);
     };
 
-    if (windowState.isDragging) {
+    if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     }
@@ -48,20 +48,16 @@ export const useWindowDrag = (isMaximized: boolean) => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [windowState.isDragging, windowState.lastPosition]);
+  }, [isDragging, dragStart.x, dragStart.y, windowStart]);
 
-  const startDragging = (e: React.MouseEvent) => {
-    if (isMaximized) return;
-    
-    setWindowState(prev => ({
-      ...prev,
-      isDragging: true,
-      lastPosition: { x: e.clientX, y: e.clientY },
-    }));
-  };
+  // Reset position when window is closed
+  useEffect(() => {
+    setPosition({ x: 0, y: 0 });
+  }, [isMaximized]);
 
   return {
-    position: windowState.position,
+    position,
+    isDragging,
     startDragging,
   };
 }; 
