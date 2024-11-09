@@ -96,9 +96,11 @@ export default function Home() {
         console.log(`${action} functionality to be implemented`);
     }
     setIsFileMenuOpen(false);
-  };
+  }; 
 
   const handleWindowControl = (action: 'close' | 'minimize' | 'maximize') => {
+    if (typeof window === 'undefined') return;
+
     const mainWindow = document.querySelector('.main-window') as HTMLElement;
     
     switch (action) {

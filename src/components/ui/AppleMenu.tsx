@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
+import { AboutMac } from '@/components/system/AboutMac';
+import { SystemSettings } from '@/components/system/SystemSettings';
 
 interface AppleMenuProps {
   isDarkMode: boolean;
@@ -10,6 +12,8 @@ interface AppleMenuProps {
 
 export const AppleMenu = ({ isDarkMode, onSleep, onLock }: AppleMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(menuRef, () => setIsOpen(false));
 
@@ -28,6 +32,12 @@ export const AppleMenu = ({ isDarkMode, onSleep, onLock }: AppleMenuProps) => {
 
   const handleAction = (action: string) => {
     switch (action) {
+      case 'about':
+        setShowAbout(true);
+        break;
+      case 'settings':
+        setShowSettings(true);
+        break;
       case 'sleep':
         onSleep();
         break;
@@ -41,67 +51,79 @@ export const AppleMenu = ({ isDarkMode, onSleep, onLock }: AppleMenuProps) => {
   };
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`h-full flex items-center px-4
-          ${isOpen 
-            ? isDarkMode 
-              ? 'bg-[#0058d1] text-white' 
-              : 'bg-[#0058d1] text-white'
-            : 'hover:bg-black/[0.06] active:bg-black/10'
-          }`}
-      >
-        <AppleLogo />
-      </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            ref={menuRef}
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-            transition={{ duration: 0.1, ease: [0.2, 0, 0, 1] }}
-            className={`absolute left-0 mt-[6px] w-[244px] rounded-lg shadow-lg
-              ${isDarkMode ? 'bg-[#2a2a2a]' : 'bg-white'}
-              border ${isDarkMode ? 'border-[#3a3a3a]' : 'border-[#d1d1d6]/50'}
-              shadow-xl shadow-black/20 z-[9999] py-1`}
-          >
-            {menuItems.map((item, index) => (
-              item.type === 'separator' ? (
-                <div 
-                  key={index} 
-                  className={`my-1 border-t ${
-                    isDarkMode ? 'border-[#3a3a3a]' : 'border-gray-200'
-                  }`} 
-                />
-              ) : (
-                <button
-                  key={index}
-                  onClick={() => handleAction(item.action)}
-                  className={`w-full px-4 py-[3px] text-[13px] text-left flex items-center justify-between
-                    ${isDarkMode 
-                      ? 'hover:bg-[#0058d1] hover:text-white' 
-                      : 'hover:bg-[#0058d1] hover:text-white'
-                    } group`}
-                >
-                  <span>{item.label}</span>
-                  {item.shortcut && (
-                    <span className={`text-[12px] ${
-                      isDarkMode 
-                        ? 'text-gray-400 group-hover:text-white/80' 
-                        : 'text-gray-500 group-hover:text-white/90'
-                    }`}>
-                      {item.shortcut}
-                    </span>
-                  )}
-                </button>
-              )
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <>
+      <div className="relative">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={`h-full flex items-center px-4
+            ${isOpen 
+              ? isDarkMode 
+                ? 'bg-[#0058d1] text-white' 
+                : 'bg-[#0058d1] text-white'
+              : 'hover:bg-black/[0.06] active:bg-black/10'
+            }`}
+        >
+          <AppleLogo />
+        </button>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              ref={menuRef}
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              transition={{ duration: 0.1, ease: [0.2, 0, 0, 1] }}
+              className={`absolute left-0 mt-[6px] w-[244px] rounded-lg shadow-lg
+                ${isDarkMode ? 'bg-[#2a2a2a]' : 'bg-white'}
+                border ${isDarkMode ? 'border-[#3a3a3a]' : 'border-[#d1d1d6]/50'}
+                shadow-xl shadow-black/20 z-[9999] py-1`}
+            >
+              {menuItems.map((item, index) => (
+                item.type === 'separator' ? (
+                  <div 
+                    key={index} 
+                    className={`my-1 border-t ${
+                      isDarkMode ? 'border-[#3a3a3a]' : 'border-gray-200'
+                    }`} 
+                  />
+                ) : (
+                  <button
+                    key={index}
+                    onClick={() => handleAction(item.action)}
+                    className={`w-full px-4 py-[3px] text-[13px] text-left flex items-center justify-between
+                      ${isDarkMode 
+                        ? 'hover:bg-[#0058d1] hover:text-white' 
+                        : 'hover:bg-[#0058d1] hover:text-white'
+                      } group`}
+                  >
+                    <span>{item.label}</span>
+                    {item.shortcut && (
+                      <span className={`text-[12px] ${
+                        isDarkMode 
+                          ? 'text-gray-400 group-hover:text-white/80' 
+                          : 'text-gray-500 group-hover:text-white/90'
+                      }`}>
+                        {item.shortcut}
+                      </span>
+                    )}
+                  </button>
+                )
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <AboutMac 
+        isOpen={showAbout}
+        onClose={() => setShowAbout(false)}
+        isDarkMode={isDarkMode}
+      />
+      <SystemSettings
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        isDarkMode={isDarkMode}
+      />
+    </>
   );
 };
 
