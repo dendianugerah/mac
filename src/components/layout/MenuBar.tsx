@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react';
 import { Wifi, Volume2, Search, Moon, Sun, WifiOff, Github } from 'lucide-react';
 import { DropdownMenu } from '@/components/ui/DropdownMenu';
@@ -8,7 +10,7 @@ import { Safari } from '@/components/browser/Safari';
 import { BatteryMenu } from '@/components/ui/BatteryMenu';
 import { VolumeMenu } from '@/components/ui/VolumeMenu';
 import { SearchMenu as SpotlightMenu } from '@/components/ui/SearchMenu';
-import { createPortal } from 'react-dom';
+import { ClientPortal } from '@/lib/client-portal';
 import { menuSections } from '@/types/menu';
 
 interface MenuBarProps {
@@ -63,17 +65,18 @@ const StatusIcons = ({ isDarkMode, toggleDarkMode, currentTime }: Pick<MenuBarPr
         </div>
 
         {/* Safari Browser */}
-        <AnimatePresence>
-          {isGithubOpen && (
-            <Safari
-              isDarkMode={isDarkMode}
-              url="https://github.com/dendianugerah"
-              onClose={() => setIsGithubOpen(false)}
-              isMaximized={false}
-              onMaximize={() => {}}
+        {isGithubOpen && (
+          <AnimatePresence>
+
+          <Safari
+            isDarkMode={isDarkMode}
+            url="https://github.com/dendianugerah"
+            onClose={() => setIsGithubOpen(false)}
+            isMaximized={false}
+            onMaximize={() => {}}
             />
+            </AnimatePresence>
           )}
-        </AnimatePresence>
       </div>
     </div>
   );
@@ -175,14 +178,13 @@ const SearchMenu = ({ isDarkMode }: { isDarkMode: boolean }) => {
       >
         <Search className="w-[16px] h-[16px]" />
       </button>
-      {createPortal(
+      <ClientPortal>
         <SpotlightMenu
           isOpen={isMenuOpen}
           onClose={() => setIsMenuOpen(false)}
           isDarkMode={isDarkMode}
-        />,
-        document.body
-      )}
+        />
+      </ClientPortal>
     </>
   );
 };
