@@ -155,7 +155,7 @@ export const AboutMac = ({ isOpen, onClose, isDarkMode }: AboutMacProps) => {
                     <h3 className="font-medium mb-2">Portfolio Resources</h3>
                     <ul className="space-y-2">
                       <li>
-                        <a href="https://github.com/dendianugerah/dendiaa-pers" 
+                        <a href="https://github.com/dendianugerah/mac" 
                           className="text-blue-500 hover:underline"
                           target="_blank"
                           rel="noopener noreferrer"
